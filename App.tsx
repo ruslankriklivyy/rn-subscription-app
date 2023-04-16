@@ -22,7 +22,7 @@ const App = () => {
   return (
     <NavigationContainer linking={navigationLinking}>
       <Stack.Navigator
-        initialRouteName="Register"
+        initialRouteName="Home"
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="GetStarted" component={GetStarted} />

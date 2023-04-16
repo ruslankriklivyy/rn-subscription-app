@@ -13,7 +13,7 @@ export const GlobalStylesVariables = {
 export const GlobalStyles = StyleSheet.create({
   box: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F6ECC9',
   },
   form: {
     padding: GlobalStylesVariables.boxPadding,

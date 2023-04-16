@@ -5,9 +5,14 @@ import {GlobalStylesVariables} from '../../config/global-styles';
 interface IMainButtonProps {
   onClick: () => void;
   title: string;
+  type?: 'main' | 'outlined';
 }
 
-export const MainButton: FC<IMainButtonProps> = ({onClick, title}) => {
+export const MainButton: FC<IMainButtonProps> = ({
+  onClick,
+  title,
+  type = 'main',
+}) => {
   const btnAnimation = new Animated.Value(1);
 
   const onPressIn = () => {
@@ -24,6 +29,23 @@ export const MainButton: FC<IMainButtonProps> = ({onClick, title}) => {
     }).start();
     onClick();
   };
+
+  if (type === 'outlined') {
+    return (
+      <Animated.View
+        style={{
+          transform: [{scale: btnAnimation}],
+        }}>
+        <TouchableOpacity
+          style={styles.buttonOutlined}
+          activeOpacity={1}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}>
+          <Text style={styles.buttonOutlinedText}>{title}</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  }
 
   return (
     <Animated.View
@@ -52,5 +74,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontFamily: GlobalStylesVariables.mainFontRegular,
+  },
+  buttonOutlined: {
+    backgroundColor: 'transparent',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#a3a3a6',
+  },
+  buttonOutlinedText: {
+    color: '#000',
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: '500',
+    fontFamily: GlobalStylesVariables.mainFontMedium,
   },
 });
