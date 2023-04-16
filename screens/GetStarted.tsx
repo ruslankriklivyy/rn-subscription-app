@@ -1,35 +1,11 @@
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  Animated,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import React from 'react';
 import {useLinkTo} from '@react-navigation/native';
-import globalStyles from '../config/global-styles';
+import {GlobalStylesVariables} from '../config/global-styles';
+import {MainButton} from '../components/UI/MainButton';
 
 const GetStarted = () => {
   const linkTo = useLinkTo();
-
-  const btnAnimation = new Animated.Value(1);
-
-  const onPressIn = () => {
-    Animated.spring(btnAnimation, {
-      toValue: 0.93,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const onPressOut = () => {
-    Animated.spring(btnAnimation, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-    linkTo('/screens/Home');
-  };
 
   return (
     <View style={styles.box}>
@@ -44,18 +20,10 @@ const GetStarted = () => {
             </Text>
           </View>
 
-          <Animated.View
-            style={{
-              transform: [{scale: btnAnimation}],
-            }}>
-            <TouchableOpacity
-              style={styles.button}
-              activeOpacity={1}
-              onPressIn={onPressIn}
-              onPressOut={onPressOut}>
-              <Text style={styles.buttonText}>Get started</Text>
-            </TouchableOpacity>
-          </Animated.View>
+          <MainButton
+            onClick={() => linkTo('/screens/Home')}
+            title={'Get started'}
+          />
         </View>
       </ImageBackground>
     </View>
@@ -81,23 +49,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: '600',
-    fontFamily: globalStyles.mainFontSemiBold,
+    fontFamily: GlobalStylesVariables.mainFontSemiBold,
     color: '#000',
     fontSize: 32,
     marginBottom: 35,
     lineHeight: 40,
     textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#000',
-    padding: 12,
-    borderRadius: 30,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 16,
-    fontFamily: globalStyles.mainFontRegular,
   },
 });
 
