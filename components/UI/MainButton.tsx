@@ -1,17 +1,20 @@
 import {Animated, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React, {FC} from 'react';
+
 import {GlobalStylesVariables} from '../../config/global-styles';
 
 interface IMainButtonProps {
   onClick: () => void;
   title: string;
   type?: 'main' | 'outlined';
+  buttonStyles?: any;
 }
 
 export const MainButton: FC<IMainButtonProps> = ({
   onClick,
   title,
   type = 'main',
+  buttonStyles,
 }) => {
   const btnAnimation = new Animated.Value(1);
 
@@ -53,7 +56,7 @@ export const MainButton: FC<IMainButtonProps> = ({
         transform: [{scale: btnAnimation}],
       }}>
       <TouchableOpacity
-        style={styles.button}
+        style={{...styles.button, ...buttonStyles}}
         activeOpacity={1}
         onPressIn={onPressIn}
         onPressOut={onPressOut}>

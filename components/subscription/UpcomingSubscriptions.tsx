@@ -55,6 +55,7 @@ export const UpcomingSubscriptions: FC<IUpcomingSubscriptionsProps> = ({
       </View>
 
       <Carousel
+        activeSlideAlignment={'start'}
         inactiveSlideScale={1}
         inactiveSlideOpacity={1}
         data={subscriptions}
@@ -70,7 +71,6 @@ export const UpcomingSubscriptions: FC<IUpcomingSubscriptionsProps> = ({
 
 const styles = StyleSheet.create({
   head: {
-    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginBottom: 10,

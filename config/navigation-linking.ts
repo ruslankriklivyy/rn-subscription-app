@@ -6,6 +6,8 @@ export default {
       Register: '/screens/Register',
       Login: '/screens/Login',
       GetStarted: '/screens/GetStarted',
+      Subscriptions: '/screens/Subscriptions',
+      Subscription: '/screens/Subscription',
     },
   },
 };

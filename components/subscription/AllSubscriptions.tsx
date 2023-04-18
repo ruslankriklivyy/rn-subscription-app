@@ -1,5 +1,13 @@
-import {StyleSheet, View, Text, Image, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {FC} from 'react';
+import {useLinkTo, useNavigation} from '@react-navigation/native';
 
 import {ISubscription} from '../../types/entities/Subscription';
 import {Title} from '../UI/Title';
@@ -15,13 +23,23 @@ interface ISubscriptionItemProps {
 }
 
 const SubscriptionItem: FC<ISubscriptionItemProps> = ({subscription}) => {
+  const navigation = useNavigation();
+
   const {name, avatar_url, pay_date, price, color} = subscription;
   const subscriptionIconSource = avatar_url
     ? {uri: avatar_url}
     : require('../../assets/images/unkown.png');
 
   return (
-    <View style={{...styles.subscriptionItem, backgroundColor: color}}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={{...styles.subscriptionItem, backgroundColor: color}}
+      onPress={() =>
+        navigation.navigate(
+          'Subscription' as never,
+          {id: subscription.id} as never,
+        )
+      }>
       <View style={styles.subscriptionItemLeft}>
         <View style={styles.subscriptionIconBox}>
           <Image
@@ -40,19 +58,25 @@ const SubscriptionItem: FC<ISubscriptionItemProps> = ({subscription}) => {
         <Text style={styles.subscriptionItemPrice}>${price}</Text>
         <Text style={styles.subscriptionItemPayType}>per month</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 export const AllSubscriptions: FC<IAllSubscriptionsProps> = ({
   subscriptions,
 }) => {
+  const linkTo = useLinkTo();
+
   return (
     <View style={styles.subscriptions}>
       <View style={styles.head}>
         <Title title={'All Subscriptions'} type={'small'} />
 
-        <MainButton onClick={() => null} title={'View all'} type={'outlined'} />
+        <MainButton
+          onClick={() => linkTo('/screens/Subscriptions')}
+          title={'View all'}
+          type={'outlined'}
+        />
       </View>
 
       <FlatList
@@ -66,7 +90,6 @@ export const AllSubscriptions: FC<IAllSubscriptionsProps> = ({
 
 const styles = StyleSheet.create({
   head: {
-    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginBottom: 10,

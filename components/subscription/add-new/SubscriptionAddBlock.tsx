@@ -1,4 +1,4 @@
-import {View, Modal, Alert} from 'react-native';
+import {View, Modal, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 
 import {AddButton} from './AddButton';
@@ -8,7 +8,6 @@ export const SubscriptionAddBlock = () => {
   const [isShowAddModal, setIsShowAddModal] = useState(false);
 
   const onCloseModal = () => {
-    Alert.alert('Modal has been closed.');
     setIsShowAddModal(false);
   };
 
@@ -20,7 +19,9 @@ export const SubscriptionAddBlock = () => {
         animationType={'slide'}
         visible={isShowAddModal}
         onRequestClose={onCloseModal}>
-        <SubscriptionAddForm />
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <SubscriptionAddForm onClose={onCloseModal} />
+        </ScrollView>
       </Modal>
     </View>
   );

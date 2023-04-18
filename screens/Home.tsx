@@ -3,7 +3,6 @@ import React from 'react';
 
 import {User} from '../components/user/User';
 import {GlobalStyles, GlobalStylesVariables} from '../config/global-styles';
-import {AddButton} from '../components/subscription/add-new/AddButton';
 import {Balance} from '../components/subscription/Balance';
 import {UpcomingSubscriptions} from '../components/subscription/UpcomingSubscriptions';
 import {AllSubscriptions} from '../components/subscription/AllSubscriptions';
