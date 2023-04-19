@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import React from 'react';
 import {useLinkTo} from '@react-navigation/native';
+
 import {GlobalStylesVariables} from '../config/global-styles';
 import {MainButton} from '../components/UI/MainButton';
 
@@ -8,25 +9,27 @@ const GetStarted = () => {
   const linkTo = useLinkTo();
 
   return (
-    <View style={styles.box}>
-      <ImageBackground
-        source={require('../assets/images/get_started_bg.jpg')}
-        resizeMode={'cover'}
-        style={styles.bgImage}>
-        <View style={styles.bottomBox}>
-          <View>
-            <Text style={styles.text}>
-              Streamline your subscriptions, simplify your life
-            </Text>
-          </View>
+    <>
+      <View style={styles.box}>
+        <ImageBackground
+          source={require('../assets/images/get_started_bg.jpg')}
+          resizeMode={'cover'}
+          style={styles.bgImage}>
+          <View style={styles.bottomBox}>
+            <View>
+              <Text style={styles.text}>
+                Streamline your subscriptions, simplify your life
+              </Text>
+            </View>
 
-          <MainButton
-            onClick={() => linkTo('/screens/Home')}
-            title={'Get started'}
-          />
-        </View>
-      </ImageBackground>
-    </View>
+            <MainButton
+              onClick={() => linkTo('/screens/Home')}
+              title={'Get started'}
+            />
+          </View>
+        </ImageBackground>
+      </View>
+    </>
   );
 };
 

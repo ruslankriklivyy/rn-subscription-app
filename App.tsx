@@ -15,6 +15,7 @@ import GetStarted from './screens/GetStarted';
 import RegisterScreen from './screens/Register';
 import LoginScreen from './screens/Login';
 import SubscriptionScreen from './screens/Subscription';
+import ProfileScreen from './screens/Profile';
 
 import navigationLinking from './config/navigation-linking';
 
@@ -32,6 +33,7 @@ const App = () => {
         <Stack.Screen name="Subscription" component={SubscriptionScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

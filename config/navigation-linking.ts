@@ -8,6 +8,7 @@ export default {
       GetStarted: '/screens/GetStarted',
       Subscriptions: '/screens/Subscriptions',
       Subscription: '/screens/Subscription',
+      Profile: '/screens/Profile',
     },
   },
 };

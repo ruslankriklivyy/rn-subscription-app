@@ -1,6 +1,7 @@
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {FC} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 import {ISubscription} from '../../types/entities/Subscription';
 import {GlobalStylesVariables} from '../../config/global-styles';
@@ -18,13 +19,25 @@ interface IUpcomingSubscriptionsProps {
 const UpcomingSubscriptionItem: FC<IUpcomingSubscriptionItemProps> = ({
   subscription,
 }) => {
+  const navigation = useNavigation();
+
   const {avatar_url, name, price} = subscription;
   const itemLogoSource = avatar_url
     ? {uri: avatar_url}
     : require('../../assets/images/unkown.png');
 
+  const onPress = () => {
+    navigation.navigate(
+      'Subscription' as never,
+      {id: subscription.id} as never,
+    );
+  };
+
   return (
-    <View style={styles.subscription}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.subscription}
+      onPress={onPress}>
       <View style={styles.subscriptionHead}>
         <View style={styles.subscriptionLogoBox}>
           <Image style={styles.subscriptionLogo} source={itemLogoSource} />
@@ -39,7 +52,7 @@ const UpcomingSubscriptionItem: FC<IUpcomingSubscriptionItemProps> = ({
       <View style={styles.subscriptionBottom}>
         <Text style={styles.subscriptionName}>{name}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

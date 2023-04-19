@@ -79,14 +79,14 @@ const styles = StyleSheet.create({
     height: 2,
     marginBottom: 20,
     marginRight: 20,
-    backgroundColor: '#e9eaec',
+    backgroundColor: '#adaaaa',
   },
   boxBottomLineRight: {
     width: 110,
     height: 2,
     marginBottom: 20,
     marginLeft: 20,
-    backgroundColor: '#e9eaec',
+    backgroundColor: '#adaaaa',
   },
   socialButton: {
     borderRadius: 100,

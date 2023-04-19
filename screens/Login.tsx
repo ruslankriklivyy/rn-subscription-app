@@ -2,6 +2,7 @@ import {View, Text, TextInput} from 'react-native';
 import {z} from 'zod';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {useLinkTo} from '@react-navigation/native';
 
 import {GlobalStyles} from '../config/global-styles';
 import {Title} from '../components/UI/Title';
@@ -27,6 +28,8 @@ const loginValidationSchema = z.object({
 type LoginValidationSchema = z.infer<typeof loginValidationSchema>;
 
 const LoginScreen = () => {
+  const linkTo = useLinkTo();
+
   const defaultValues: ILoginFormValues = {
     email: '',
     password: '',
@@ -45,6 +48,7 @@ const LoginScreen = () => {
     values: ILoginFormValues,
   ) => {
     console.log('DATA', values);
+    linkTo('/screens/Home');
   };
 
   return (

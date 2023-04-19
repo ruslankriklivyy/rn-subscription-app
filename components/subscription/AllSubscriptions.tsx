@@ -30,16 +30,18 @@ const SubscriptionItem: FC<ISubscriptionItemProps> = ({subscription}) => {
     ? {uri: avatar_url}
     : require('../../assets/images/unkown.png');
 
+  const onPress = () => {
+    navigation.navigate(
+      'Subscription' as never,
+      {id: subscription.id} as never,
+    );
+  };
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       style={{...styles.subscriptionItem, backgroundColor: color}}
-      onPress={() =>
-        navigation.navigate(
-          'Subscription' as never,
-          {id: subscription.id} as never,
-        )
-      }>
+      onPress={onPress}>
       <View style={styles.subscriptionItemLeft}>
         <View style={styles.subscriptionIconBox}>
           <Image

@@ -1,5 +1,6 @@
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import {FC} from 'react';
+import {useLinkTo} from '@react-navigation/native';
 
 import {GlobalStylesVariables} from '../../config/global-styles';
 
@@ -9,16 +10,21 @@ interface IUserProps {
 }
 
 export const User: FC<IUserProps> = ({avatarUrl, username}) => {
+  const linkTo = useLinkTo();
+
   const avatarSource = avatarUrl
     ? {uri: avatarUrl}
     : require('../../assets/images/avatar.png');
 
   return (
-    <View style={styles.user}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.user}
+      onPress={() => linkTo('/screens/Profile')}>
       <Image style={styles.userAvatar} source={avatarSource} />
 
       <Text style={styles.username}>{username}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
