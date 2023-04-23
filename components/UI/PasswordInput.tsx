@@ -34,6 +34,7 @@ export const PasswordInput: FC<IPasswordInputProps> = ({
         style={!error ? styles.input : styles.inputError}
         secureTextEntry={isSecure}
         placeholder={placeholder ?? 'Password'}
+        placeholderTextColor={GlobalStylesVariables.placeholderInputColor}
         onBlur={onBlur}
         onChangeText={onChange}
         value={value}
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#FAFCFE',
-    color: '#000',
     borderRadius: 20,
     padding: 15,
     fontSize: 16,
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: '#e9eaec',
+    color: '#000',
   },
   inputError: {
     backgroundColor: '#FAFCFE',
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: 'red',
+    color: '#000',
   },
   inputIconBox: {
     position: 'absolute',

@@ -4,12 +4,13 @@ import {useLinkTo} from '@react-navigation/native';
 
 import {GlobalStylesVariables} from '../config/global-styles';
 import {MainButton} from '../components/UI/MainButton';
+import {MainLayout} from '../layouts/main';
 
 const GetStarted = () => {
   const linkTo = useLinkTo();
 
   return (
-    <>
+    <MainLayout>
       <View style={styles.box}>
         <ImageBackground
           source={require('../assets/images/get_started_bg.jpg')}
@@ -29,7 +30,7 @@ const GetStarted = () => {
           </View>
         </ImageBackground>
       </View>
-    </>
+    </MainLayout>
   );
 };
 

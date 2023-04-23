@@ -1,21 +1,44 @@
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
+import auth from '@react-native-firebase/auth';
 
+import {useAuthStore} from '../stores/auth.store';
 import {User} from '../components/user/User';
 import {GlobalStyles, GlobalStylesVariables} from '../config/global-styles';
 import {Balance} from '../components/subscription/Balance';
 import {UpcomingSubscriptions} from '../components/subscription/UpcomingSubscriptions';
 import {AllSubscriptions} from '../components/subscription/AllSubscriptions';
 import {SubscriptionAddBlock} from '../components/subscription/add-new/SubscriptionAddBlock';
+import {MainLayout} from '../layouts/main';
+import {useSubscriptionsStore} from '../stores/subscriptions.store';
 
 const HomeScreen = () => {
+  const user = useAuthStore(state => state.user);
+  const subscriptions = useSubscriptionsStore(state => state.subscriptions);
+
+  const setUser = useAuthStore(state => state.setUser);
+  const getAllSubscriptions = useSubscriptionsStore(state => state.getAll);
+
+  useEffect(() => {
+    getAllSubscriptions();
+  }, []);
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(user => setUser(user));
+    return subscriber;
+  }, []);
+
   return (
-    <>
+    <MainLayout>
       <SafeAreaView style={GlobalStyles.box}>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View style={styles.home}>
             <View style={styles.header}>
-              <User username={'Test'} />
+              <User
+                link={user ? '/screens/Profile' : '/screens/Login'}
+                avatarUrl={user?.photoURL}
+                username={user?.displayName || user?.email}
+              />
 
               <SubscriptionAddBlock />
             </View>
@@ -23,116 +46,14 @@ const HomeScreen = () => {
             <View style={styles.content}>
               <Balance total={180.6} />
 
-              <UpcomingSubscriptions
-                subscriptions={[
-                  {
-                    id: '1',
-                    name: 'Spotify',
-                    price: 12.2,
-                    color: '#F7D44C',
-                    pay_date: '12.12.2023',
-                    pay_type: 'some',
-                    payment_info: 123,
-                    plan_details: 'Premium',
-                    avatar_url:
-                      'https://cdn-icons-png.flaticon.com/512/152/152756.png',
-                  },
-                  {
-                    id: '2',
-                    name: 'Netflix',
-                    price: 24.0,
-                    color: '#99B7DD',
-                    pay_date: '02.07.2023',
-                    pay_type: 'some',
-                    payment_info: 54675756,
-                    plan_details: 'Premium',
-                    avatar_url:
-                      'https://creazilla-store.fra1.digitaloceanspaces.com/icons/3234779/netflix-icon-md.png',
-                  },
-                  {
-                    id: '3',
-                    name: 'Medium',
-                    price: 36.0,
-                    color: '#8BCBB8',
-                    pay_date: '10.10.2023',
-                    pay_type: 'some',
-                    payment_info: 675756,
-                    plan_details: 'Student',
-                    avatar_url:
-                      'https://cdn-icons-png.flaticon.com/512/5968/5968885.png',
-                  },
-                  {
-                    id: '2',
-                    name: 'Netflix',
-                    price: 24.0,
-                    color: '#99B7DD',
-                    pay_date: '02.07.2023',
-                    pay_type: 'some',
-                    payment_info: 54675756,
-                    plan_details: 'Premium',
-                    avatar_url:
-                      'https://creazilla-store.fra1.digitaloceanspaces.com/icons/3234779/netflix-icon-md.png',
-                  },
-                ]}
-              />
+              <UpcomingSubscriptions subscriptions={subscriptions as any} />
 
-              <AllSubscriptions
-                subscriptions={[
-                  {
-                    id: '1',
-                    name: 'Spotify',
-                    price: 12.2,
-                    color: '#F7D44C',
-                    pay_date: '12.12.2023',
-                    pay_type: 'some',
-                    payment_info: 123,
-                    plan_details: 'Premium',
-                    avatar_url:
-                      'https://cdn-icons-png.flaticon.com/512/152/152756.png',
-                  },
-                  {
-                    id: '2',
-                    name: 'Netflix',
-                    price: 24.0,
-                    color: '#99B7DD',
-                    pay_date: '02.07.2023',
-                    pay_type: 'some',
-                    payment_info: 54675756,
-                    plan_details: 'Premium',
-                    avatar_url:
-                      'https://creazilla-store.fra1.digitaloceanspaces.com/icons/3234779/netflix-icon-md.png',
-                  },
-                  {
-                    id: '3',
-                    name: 'Medium',
-                    price: 36.0,
-                    color: '#8BCBB8',
-                    pay_date: '10.10.2023',
-                    pay_type: 'some',
-                    payment_info: 675756,
-                    plan_details: 'Student',
-                    avatar_url:
-                      'https://cdn-icons-png.flaticon.com/512/5968/5968885.png',
-                  },
-                  {
-                    id: '4',
-                    name: 'Netflix',
-                    price: 24.0,
-                    color: '#99B7DD',
-                    pay_date: '02.07.2023',
-                    pay_type: 'some',
-                    payment_info: 54675756,
-                    plan_details: 'Premium',
-                    avatar_url:
-                      'https://creazilla-store.fra1.digitaloceanspaces.com/icons/3234779/netflix-icon-md.png',
-                  },
-                ]}
-              />
+              <AllSubscriptions subscriptions={subscriptions as any} />
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
-    </>
+    </MainLayout>
   );
 };
 

@@ -10,7 +10,7 @@ export const Balance: FC<IBalanceProps> = ({total}) => {
   return (
     <View style={styles.balance}>
       <View style={styles.head}>
-        <Text style={styles.balanceTitle}>Balance</Text>
+        <Text style={styles.balanceTitle}>Total</Text>
         <Image
           style={styles.creditCardIcon}
           source={require('../../assets/images/credit-card.png')}

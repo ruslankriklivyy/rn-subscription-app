@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     color: '#000',
+    textAlign: 'right',
   },
   subscriptionItemPayType: {
     fontFamily: GlobalStylesVariables.mainFontRegular,

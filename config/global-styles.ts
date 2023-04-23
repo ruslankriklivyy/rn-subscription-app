@@ -8,6 +8,9 @@ export const GlobalStylesVariables = {
 
   // Variables
   boxPadding: 20,
+
+  // Colors
+  placeholderInputColor: '#726d6d',
 };
 
 export const GlobalStyles = StyleSheet.create({
@@ -30,9 +33,11 @@ export const GlobalStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e9eaec',
     borderStyle: 'solid',
+    color: '#000',
   },
   inputError: {
     backgroundColor: '#FAFCFE',
+    color: '#000',
     borderRadius: 20,
     padding: 15,
     fontSize: 16,

@@ -1,4 +1,4 @@
-import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
 import {FC} from 'react';
 import {useLinkTo} from '@react-navigation/native';
 
@@ -6,10 +6,11 @@ import {GlobalStylesVariables} from '../../config/global-styles';
 
 interface IUserProps {
   avatarUrl?: string | null;
-  username: string;
+  username?: string | null;
+  link: string;
 }
 
-export const User: FC<IUserProps> = ({avatarUrl, username}) => {
+export const User: FC<IUserProps> = ({avatarUrl, username, link}) => {
   const linkTo = useLinkTo();
 
   const avatarSource = avatarUrl
@@ -20,7 +21,7 @@ export const User: FC<IUserProps> = ({avatarUrl, username}) => {
     <TouchableOpacity
       activeOpacity={0.7}
       style={styles.user}
-      onPress={() => linkTo('/screens/Profile')}>
+      onPress={() => linkTo(link)}>
       <Image style={styles.userAvatar} source={avatarSource} />
 
       <Text style={styles.username}>{username}</Text>

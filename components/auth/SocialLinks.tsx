@@ -1,8 +1,9 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useLinkTo} from '@react-navigation/native';
+import {FC} from 'react';
 
 import {GlobalStylesVariables} from '../../config/global-styles';
-import {FC} from 'react';
+import {useAuthStore} from '../../stores/auth.store';
 
 interface ISocialLinksProps {
   link: string;
@@ -18,6 +19,16 @@ export const SocialLinks: FC<ISocialLinksProps> = ({
   title,
 }) => {
   const linkTo = useLinkTo();
+  const loginWithGoogle = useAuthStore(state => state.loginWithGoogle);
+
+  const onPressGoogle = async () => {
+    try {
+      await loginWithGoogle();
+      linkTo('/screens/Home');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.boxBottom}>
@@ -35,7 +46,10 @@ export const SocialLinks: FC<ISocialLinksProps> = ({
         <View style={styles.boxBottomLineRight} />
       </View>
 
-      <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.socialButton}
+        activeOpacity={0.8}
+        onPress={onPressGoogle}>
         <Image
           source={require('../../assets/images/google.png')}
           style={styles.socialIcon}

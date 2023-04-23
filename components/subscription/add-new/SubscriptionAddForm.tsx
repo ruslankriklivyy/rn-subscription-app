@@ -12,7 +12,6 @@ import {z} from 'zod';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {launchImageLibrary} from 'react-native-image-picker';
-import NumericInput from 'react-native-numeric-input';
 import DatePicker from 'react-native-date-picker';
 import {ColorPicker} from 'react-native-color-picker';
 
@@ -21,17 +20,17 @@ import {
   GlobalStyles,
   GlobalStylesVariables,
 } from '../../../config/global-styles';
-import {Title} from '../../UI/Title';
-import {BackButton} from '../../UI/BackButton';
 import moment from 'moment';
 import {MainButton} from '../../UI/MainButton';
 import {Header} from '../../UI/Header';
+import {useSubscriptionsStore} from '../../../stores/subscriptions.store';
+import {useLinkTo} from '@react-navigation/native';
 
 interface ISubscriptionAddFormProps {
   onClose?: () => void;
 }
 
-interface ISubscriptionAddFormValues
+export interface ISubscriptionAddFormValues
   extends Omit<ISubscription, 'avatar_url' | 'id' | 'pay_date' | 'price'> {
   avatar: any;
   price: string;
@@ -83,12 +82,16 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
     resolver: zodResolver(subscriptionAddValidationSchema),
   });
 
+  const linkTo = useLinkTo();
+  const createOneSubscription = useSubscriptionsStore(state => state.createOne);
+
   const formValues = watch();
 
-  const onSubmit: SubmitHandler<SubscriptionAddValidationSchema> = (
+  const onSubmit: SubmitHandler<SubscriptionAddValidationSchema> = async (
     values: ISubscriptionAddFormValues,
   ) => {
-    console.log('DATA', values);
+    await createOneSubscription(values);
+    linkTo('/screens/Home');
   };
 
   const pickImage = () => {
