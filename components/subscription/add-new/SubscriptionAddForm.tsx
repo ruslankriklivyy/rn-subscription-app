@@ -95,6 +95,7 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
     values: ISubscriptionAddFormValues,
   ) => {
     await createOneSubscription({...values, user_id: user?.uid});
+    onClose && onClose();
     linkTo('/screens/Home');
   };
 

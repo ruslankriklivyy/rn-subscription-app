@@ -25,9 +25,9 @@ interface ISubscriptionItemProps {
 const SubscriptionItem: FC<ISubscriptionItemProps> = ({subscription}) => {
   const navigation = useNavigation();
 
-  const {name, avatar_url, pay_date, price, color} = subscription;
-  const subscriptionIconSource = avatar_url
-    ? {uri: avatar_url}
+  const {name, avatar, pay_date, price, color} = subscription;
+  const subscriptionIconSource = avatar
+    ? {uri: avatar.uri}
     : require('../../assets/images/unkown.png');
 
   const onPress = () => {

@@ -40,10 +40,10 @@ const MySubscriptionDetailsItem: FC<IMySubscriptionItemProps> = ({
   const removeOneSubscription = useSubscriptionsStore(state => state.removeOne);
   const navigation = useNavigation();
 
-  const {id, name, price, color, avatar_url, pay_date, plan_details, pay_type} =
+  const {id, name, price, color, avatar, pay_date, plan_details, pay_type} =
     subscription;
-  const subscriptionIconSource = avatar_url
-    ? {uri: avatar_url}
+  const subscriptionIconSource = avatar
+    ? {uri: avatar.uri}
     : require('../../assets/images/unkown.png');
 
   return (
@@ -99,9 +99,9 @@ const MySubscriptionDetailsItem: FC<IMySubscriptionItemProps> = ({
 const MySubscriptionItem: FC<IMySubscriptionItemProps> = ({subscription}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const {name, price, avatar_url, plan_details} = subscription;
-  const subscriptionIconSource = avatar_url
-    ? {uri: avatar_url}
+  const {name, price, avatar, plan_details} = subscription;
+  const subscriptionIconSource = avatar
+    ? {uri: avatar.uri}
     : require('../../assets/images/unkown.png');
 
   const onPress = () => {

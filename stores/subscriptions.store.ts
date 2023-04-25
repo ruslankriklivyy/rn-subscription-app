@@ -1,8 +1,10 @@
 import {create} from 'zustand';
+import storage from '@react-native-firebase/storage';
 
 import {ISubscription} from '../types/entities/Subscription';
 import {subscriptionsService} from '../services/subscriptions.service';
 import {ISubscriptionAddFormValues} from '../components/subscription/add-new/SubscriptionAddForm';
+import {Platform} from 'react-native';
 
 interface ISubscriptionsStoreState {
   subscriptions: ISubscription[] | null;
@@ -46,9 +48,24 @@ export const useSubscriptionsStore = create<
   },
 
   createOne: async (payload: ISubscriptionAddFormValues) => {
-    await subscriptionsService.createOne(payload);
-    const subscriptions = await subscriptionsService.getAll();
-    set({subscriptions});
+    try {
+      const {uri} = payload.avatar;
+      const filename = uri.substring(uri.lastIndexOf('/') + 1);
+      const uploadUri =
+        Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+      await storage().ref(filename).putFile(uploadUri);
+      const filePath = await storage().ref(filename).getDownloadURL();
+      await subscriptionsService.createOne({
+        ...payload,
+        avatar: {uri: filePath, filename},
+      });
+
+      const subscriptions = await subscriptionsService.getAll();
+      set({subscriptions});
+    } catch (error) {
+      throw error;
+    }
   },
 
   removeOne: async (subscriptionId: string) => {

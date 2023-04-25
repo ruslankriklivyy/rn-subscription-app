@@ -21,9 +21,9 @@ const UpcomingSubscriptionItem: FC<IUpcomingSubscriptionItemProps> = ({
 }) => {
   const navigation = useNavigation();
 
-  const {avatar_url, name, price} = subscription;
-  const itemLogoSource = avatar_url
-    ? {uri: avatar_url}
+  const {avatar, name, price} = subscription;
+  const itemLogoSource = avatar
+    ? {uri: avatar.uri}
     : require('../../assets/images/unkown.png');
 
   const onPress = () => {
