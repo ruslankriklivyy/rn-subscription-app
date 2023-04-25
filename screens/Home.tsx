@@ -6,7 +6,6 @@ import {useAuthStore} from '../stores/auth.store';
 import {User} from '../components/user/User';
 import {GlobalStyles, GlobalStylesVariables} from '../config/global-styles';
 import {Balance} from '../components/subscription/Balance';
-import {UpcomingSubscriptions} from '../components/subscription/UpcomingSubscriptions';
 import {AllSubscriptions} from '../components/subscription/AllSubscriptions';
 import {SubscriptionAddBlock} from '../components/subscription/add-new/SubscriptionAddBlock';
 import {MainLayout} from '../layouts/main';
@@ -15,13 +14,16 @@ import {useSubscriptionsStore} from '../stores/subscriptions.store';
 const HomeScreen = () => {
   const user = useAuthStore(state => state.user);
   const subscriptions = useSubscriptionsStore(state => state.subscriptions);
+  const totalPriceSubscriptions = useSubscriptionsStore(
+    state => state.totalPrice,
+  );
 
   const setUser = useAuthStore(state => state.setUser);
   const getAllSubscriptions = useSubscriptionsStore(state => state.getAll);
 
   useEffect(() => {
     getAllSubscriptions();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(user => setUser(user));
@@ -44,11 +46,11 @@ const HomeScreen = () => {
             </View>
 
             <View style={styles.content}>
-              <Balance total={180.6} />
+              <Balance total={totalPriceSubscriptions} />
 
-              <UpcomingSubscriptions subscriptions={subscriptions as any} />
+              {/*<UpcomingSubscriptions subscriptions={subscriptions as any} />*/}
 
-              <AllSubscriptions subscriptions={subscriptions as any} />
+              <AllSubscriptions subscriptions={subscriptions} />
             </View>
           </View>
         </ScrollView>

@@ -47,6 +47,21 @@ export const GlobalStyles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: 'red',
   },
+  inputNumeric: {
+    padding: 15,
+    fontSize: 16,
+    fontFamily: GlobalStylesVariables.mainFontRegular,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#e9eaec',
+    borderStyle: 'solid',
+    backgroundColor: '#FAFCFE',
+    borderRadius: 20,
+  },
+  datePickerText: {
+    fontSize: 16,
+    fontFamily: GlobalStylesVariables.mainFontRegular,
+  },
   errorMessage: {
     color: 'red',
     marginTop: -15,

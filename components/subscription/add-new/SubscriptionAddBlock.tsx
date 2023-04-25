@@ -1,7 +1,7 @@
 import {View, Modal, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 
-import {AddButton} from './AddButton';
+import {AddButton} from '../../UI/AddButton';
 import {SubscriptionAddForm} from './SubscriptionAddForm';
 
 export const SubscriptionAddBlock = () => {

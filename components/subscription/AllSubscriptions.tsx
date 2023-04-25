@@ -15,7 +15,7 @@ import {MainButton} from '../UI/MainButton';
 import {GlobalStylesVariables} from '../../config/global-styles';
 
 interface IAllSubscriptionsProps {
-  subscriptions: ISubscription[];
+  subscriptions: ISubscription[] | null;
 }
 
 interface ISubscriptionItemProps {

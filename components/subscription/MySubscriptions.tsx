@@ -10,11 +10,12 @@ import {
   UIManager,
 } from 'react-native';
 import {FC, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 import {ISubscription} from '../../types/entities/Subscription';
 import {GlobalStylesVariables} from '../../config/global-styles';
 import {MainButton} from '../UI/MainButton';
-import {useNavigation} from '@react-navigation/native';
+import {useSubscriptionsStore} from '../../stores/subscriptions.store';
 
 interface IMySubscriptionsProps {
   subscriptions?: ISubscription[];
@@ -36,9 +37,10 @@ const MySubscriptionDetailsItem: FC<IMySubscriptionItemProps> = ({
   subscription,
   onPress,
 }) => {
+  const removeOneSubscription = useSubscriptionsStore(state => state.removeOne);
   const navigation = useNavigation();
 
-  const {name, price, color, avatar_url, pay_date, plan_details, pay_type} =
+  const {id, name, price, color, avatar_url, pay_date, plan_details, pay_type} =
     subscription;
   const subscriptionIconSource = avatar_url
     ? {uri: avatar_url}
@@ -85,7 +87,10 @@ const MySubscriptionDetailsItem: FC<IMySubscriptionItemProps> = ({
           title={'View Details'}
           buttonStyles={{marginBottom: 20}}
         />
-        <MainButton onClick={() => null} title={'Remove Subscription'} />
+        <MainButton
+          onClick={() => removeOneSubscription(id)}
+          title={'Remove Subscription'}
+        />
       </View>
     </TouchableOpacity>
   );

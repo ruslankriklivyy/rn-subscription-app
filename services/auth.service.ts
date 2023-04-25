@@ -2,9 +2,11 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Alert} from 'react-native';
+// @ts-ignore
+import {REACT_APP_FIREBASE_AUTH_WEB_CLIENT_ID} from '@env';
 
 GoogleSignin.configure({
-  webClientId: process.env.FIREBASE_AUTH_WEB_CLIENT_ID,
+  webClientId: REACT_APP_FIREBASE_AUTH_WEB_CLIENT_ID,
 });
 
 export interface IRegisterAndLoginPayload {

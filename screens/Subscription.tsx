@@ -1,85 +1,120 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, ScrollView} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {Dimensions} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
+import {useEffect} from 'react';
+import moment from 'moment';
 
 import {Header} from '../components/UI/Header';
 import {GlobalStyles, GlobalStylesVariables} from '../config/global-styles';
 import {MainLayout} from '../layouts/main';
-import {useEffect} from 'react';
-import {subscriptionsService} from '../services/subscriptions.service';
+import {useSubscriptionsStore} from '../stores/subscriptions.store';
+import {Transactions} from '../components/transaction/Transactions';
+import {TransactionAddBlock} from '../components/transaction/add-new/TransactionAddBlock';
+import {useTransactionsStore} from '../stores/transactions.store';
 
 const SubscriptionScreen = () => {
   const route = useRoute();
+
+  const transactions = useTransactionsStore(state => state.transactions);
+  const getAllTransactions = useTransactionsStore(state => state.getAll);
+  const countTotalPriceBySubscription = useTransactionsStore(
+    state => state.countTotalPriceBySubscription,
+  );
+  const transactionTotalPrice = useTransactionsStore(state => state.totalPrice);
+  const subscription = useSubscriptionsStore(state => state.subscription);
+  const getOneSubscription = useSubscriptionsStore(state => state.getOne);
+
   const subscriptionId = (route.params as Record<string, string>).id;
+  const nowDate = moment().format('MM.DD.YYYY');
 
   useEffect(() => {
-    subscriptionsService
-      .getOne(subscriptionId)
-      .then(res => console.log('SUBSCRIPTION', res));
-  }, []);
+    getOneSubscription(subscriptionId);
+    getAllTransactions(subscriptionId);
+  }, [subscriptionId]);
+
+  useEffect(() => {
+    countTotalPriceBySubscription(subscriptionId);
+  }, [subscriptionId, transactions]);
 
   return (
     <MainLayout>
-      <View style={GlobalStyles.box}>
-        <Header title={`Subscription - ${subscriptionId}`} />
+      <SafeAreaView style={GlobalStyles.box}>
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <Header title={subscription?.name} />
 
-        <View style={styles.content}>
-          <LineChart
-            data={{
-              labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-              datasets: [
-                {
-                  data: [
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
-                    Math.random() * 100,
+          <View style={styles.content}>
+            {!!transactions?.length && (
+              <LineChart
+                data={{
+                  labels: [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
                   ],
-                },
-              ],
-            }}
-            width={Dimensions.get('window').width - 40}
-            height={220}
-            yAxisLabel="$"
-            yAxisSuffix="k"
-            yAxisInterval={1}
-            chartConfig={{
-              backgroundColor: '#E3DBB9',
-              backgroundGradientFrom: '#E3DBB9',
-              backgroundGradientTo: '#E3DBB9',
-              decimalPlaces: 2,
-              color: () => '#000',
-              labelColor: () => '#000',
-              propsForDots: {
-                r: '6',
-                strokeWidth: '2',
-                stroke: '#EA7A53',
-              },
-            }}
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 20,
-            }}
-          />
+                  datasets: [
+                    {
+                      data: transactions.map(transaction =>
+                        Number(transaction.price),
+                      ),
+                    },
+                  ],
+                }}
+                width={Dimensions.get('window').width - 40}
+                height={220}
+                yAxisLabel="$"
+                yAxisInterval={1}
+                chartConfig={{
+                  backgroundColor: '#E3DBB9',
+                  backgroundGradientFrom: '#E3DBB9',
+                  backgroundGradientTo: '#E3DBB9',
+                  decimalPlaces: 2,
+                  color: () => '#000',
+                  labelColor: () => '#000',
+                  propsForDots: {
+                    r: '6',
+                    strokeWidth: '2',
+                    stroke: '#EA7A53',
+                  },
+                }}
+                bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 20,
+                }}
+              />
+            )}
 
-          <View style={styles.infoBlock}>
-            <View style={styles.infoBlockItem}>
-              <View style={styles.infoBlockItemLeft}>
-                <Text style={styles.infoBlockName}>Total</Text>
-                <Text style={styles.infoBlockDate}>04.18.2023</Text>
-              </View>
+            <View style={styles.infoBlock}>
+              <View style={styles.infoBlockItem}>
+                <View style={styles.infoBlockItemLeft}>
+                  <Text style={styles.infoBlockName}>Total</Text>
+                  <Text style={styles.infoBlockDate}>{nowDate}</Text>
+                </View>
 
-              <View style={styles.infoBlockItemRight}>
-                <Text style={styles.infoBlockItemTotal}>$145.45</Text>
+                <View style={styles.infoBlockItemRight}>
+                  <Text style={styles.infoBlockItemTotal}>
+                    ${transactionTotalPrice}
+                  </Text>
+                </View>
               </View>
             </View>
+
+            <View style={styles.transactions}>
+              <View style={styles.transactionsTop}>
+                <Text style={styles.transactionsTitle}>Transactions</Text>
+
+                <TransactionAddBlock />
+              </View>
+
+              {subscription && <Transactions transactions={transactions} />}
+            </View>
           </View>
-        </View>
-      </View>
+        </ScrollView>
+      </SafeAreaView>
     </MainLayout>
   );
 };
@@ -118,6 +153,22 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000',
     fontSize: 16,
+  },
+  transactions: {
+    marginTop: 20,
+  },
+  transactionsTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  transactionsTitle: {
+    fontFamily: GlobalStylesVariables.mainFontSemiBold,
+    fontWeight: '600',
+    fontSize: 18,
+  },
+  transactionsList: {
+    marginTop: 10,
   },
 });
 

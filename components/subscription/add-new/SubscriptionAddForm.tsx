@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Alert,
 } from 'react-native';
 import {FC, useState} from 'react';
 import {z} from 'zod';
@@ -14,6 +13,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {launchImageLibrary} from 'react-native-image-picker';
 import DatePicker from 'react-native-date-picker';
 import {ColorPicker} from 'react-native-color-picker';
+import {useLinkTo} from '@react-navigation/native';
 
 import {ISubscription} from '../../../types/entities/Subscription';
 import {
@@ -24,7 +24,8 @@ import moment from 'moment';
 import {MainButton} from '../../UI/MainButton';
 import {Header} from '../../UI/Header';
 import {useSubscriptionsStore} from '../../../stores/subscriptions.store';
-import {useLinkTo} from '@react-navigation/native';
+import {formatPrice} from '../../../helpers/formatPrice';
+import {useAuthStore} from '../../../stores/auth.store';
 
 interface ISubscriptionAddFormProps {
   onClose?: () => void;
@@ -32,9 +33,10 @@ interface ISubscriptionAddFormProps {
 
 export interface ISubscriptionAddFormValues
   extends Omit<ISubscription, 'avatar_url' | 'id' | 'pay_date' | 'price'> {
-  avatar: any;
+  avatar?: any;
   price: string;
   pay_date: Date;
+  user_id?: string;
 }
 
 const subscriptionAddValidationSchema = z.object({
@@ -69,6 +71,7 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
     plan_details: '',
     payment_info: 0,
     color: '',
+    user_id: '',
   };
 
   const {
@@ -83,6 +86,7 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
   });
 
   const linkTo = useLinkTo();
+  const user = useAuthStore(state => state.user);
   const createOneSubscription = useSubscriptionsStore(state => state.createOne);
 
   const formValues = watch();
@@ -90,7 +94,7 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
   const onSubmit: SubmitHandler<SubscriptionAddValidationSchema> = async (
     values: ISubscriptionAddFormValues,
   ) => {
-    await createOneSubscription(values);
+    await createOneSubscription({...values, user_id: user?.uid});
     linkTo('/screens/Home');
   };
 
@@ -107,18 +111,7 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
   };
 
   const onChangeNumericInput = (value: string) => {
-    let newText = '';
-    const numbers = '0123456789';
-
-    for (let i = 0; i < value.length; i++) {
-      if (numbers.indexOf(value[i]) > -1) {
-        newText = newText + value[i];
-      } else {
-        Alert.alert('please enter numbers only');
-        setValue('price', '');
-      }
-    }
-    setValue('price', newText);
+    setValue('price', formatPrice(value));
   };
 
   return (
@@ -179,7 +172,9 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
                 <View style={styles.inputNumericBox}>
                   <TextInput
                     style={
-                      !error ? styles.inputNumeric : GlobalStyles.inputError
+                      !error
+                        ? GlobalStyles.inputNumeric
+                        : GlobalStyles.inputError
                     }
                     keyboardType={'numeric'}
                     placeholder="Price"
@@ -233,7 +228,7 @@ export const SubscriptionAddForm: FC<ISubscriptionAddFormProps> = ({
                   activeOpacity={1}
                   style={!error ? GlobalStyles.input : GlobalStyles.inputError}
                   onPress={() => setIsOpenDatePicker(true)}>
-                  <Text style={styles.datePickerText}>
+                  <Text style={GlobalStyles.datePickerText}>
                     Pay date: {moment(value).format('MM-DD-YYYY')}
                   </Text>
                 </TouchableOpacity>
@@ -381,26 +376,9 @@ const styles = StyleSheet.create({
   inputNumericBox: {
     width: '46%',
   },
-  inputNumeric: {
-    padding: 15,
-    fontSize: 16,
-    fontFamily: GlobalStylesVariables.mainFontRegular,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#e9eaec',
-    borderStyle: 'solid',
-    backgroundColor: '#FAFCFE',
-    borderRadius: 20,
-  },
-
   twoInputs: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-
-  datePickerText: {
-    fontSize: 16,
-    fontFamily: GlobalStylesVariables.mainFontRegular,
   },
 
   colorPicker: {
